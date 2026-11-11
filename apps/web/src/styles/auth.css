@@ -1,0 +1,397 @@
+/* ============================================================
+   Estilos de login, registro y pantallas provisionales
+   Reutiliza los tokens de global.css y el .meter de landing.css
+   ============================================================ */
+
+/* ---------- Página ---------- */
+.auth-page {
+  position: relative;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+.auth-page::before {
+  /* Misma cuadrícula de plano técnico del hero */
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(var(--border) 1px, transparent 1px),
+    linear-gradient(90deg, var(--border) 1px, transparent 1px);
+  background-size: 56px 56px;
+  opacity: 0.5;
+  -webkit-mask-image: radial-gradient(ellipse 70% 70% at 50% 50%, #000 0%, transparent 80%);
+  mask-image: radial-gradient(ellipse 70% 70% at 50% 50%, #000 0%, transparent 80%);
+  pointer-events: none;
+}
+.auth-top,
+.auth-main {
+  position: relative;
+  z-index: 1;
+}
+.auth-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 84px;
+}
+.auth-back {
+  font-size: 14px;
+  color: var(--text-muted);
+  transition: color 0.2s;
+}
+.auth-back:hover {
+  color: var(--text);
+}
+.auth-main {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding-top: 8px;
+  padding-bottom: 64px;
+}
+
+/* ---------- Tarjeta con panel deslizante ---------- */
+.auth-card {
+  position: relative;
+  width: 100%;
+  max-width: 1000px;
+  min-height: 680px;
+  background: rgba(23, 26, 33, 0.94);
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius-lg);
+  /* Misma sombra plana desplazada del simulador */
+  box-shadow: 14px 14px 0 var(--accent-soft);
+  overflow: hidden;
+}
+
+/* Cada formulario ocupa una mitad; el inactivo queda oculto bajo el panel azul */
+.auth-pane {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 50%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 48px 56px;
+  overflow-y: auto;
+  visibility: hidden;
+  opacity: 0;
+  transition: opacity 0.3s ease, visibility 0s linear 0.6s;
+}
+.auth-pane.activo {
+  visibility: visible;
+  opacity: 1;
+  transition: opacity 0.4s ease 0.25s, visibility 0s;
+}
+.auth-pane-login {
+  left: 0;
+}
+.auth-pane-registro {
+  left: 50%;
+}
+
+/* Panel azul: a la derecha en login, a la izquierda en registro */
+.auth-overlay {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  width: 50%;
+  background: var(--accent);
+  color: #08101f;
+  overflow: hidden;
+  transform: translateX(100%);
+  transition: transform 0.6s cubic-bezier(0.7, 0, 0.2, 1);
+}
+.auth-card[data-modo="registro"] .auth-overlay {
+  transform: translateX(0);
+}
+
+.overlay-copy {
+  position: absolute;
+  top: 56px;
+  left: 56px;
+  right: 56px;
+  z-index: 1;
+  visibility: hidden;
+  opacity: 0;
+  transition: opacity 0.3s ease, visibility 0s linear 0.6s;
+}
+.overlay-copy.activo {
+  visibility: visible;
+  opacity: 1;
+  transition: opacity 0.4s ease 0.25s, visibility 0s;
+}
+.overlay-copy h2 {
+  max-width: 9em;
+  font-size: clamp(26px, 3vw, 40px);
+  line-height: 1.02;
+  font-stretch: 118%;
+}
+.overlay-copy p {
+  max-width: 30ch;
+  margin: 20px 0 28px;
+  font-size: 16.5px;
+}
+
+/* El esquema de la PC aparece como marca de agua en tinta oscura */
+.overlay-art {
+  position: absolute;
+  right: -70px;
+  bottom: -80px;
+  width: 300px;
+  opacity: 0.38;
+  pointer-events: none;
+}
+.overlay-art .pc-wireframe {
+  max-width: none;
+  color: #08101f;
+}
+.overlay-art .wf-case,
+.overlay-art .wf-board,
+.overlay-art .wf-ram {
+  fill: none;
+  stroke: #08101f;
+}
+.overlay-art .wf-dim {
+  stroke: #08101f;
+}
+.overlay-art .wf-accent {
+  fill: rgba(8, 16, 31, 0.14);
+  stroke: #08101f;
+}
+.overlay-art .wf-label {
+  fill: #08101f;
+}
+
+/* Selector superior para móvil (oculto en escritorio) */
+.auth-switch {
+  display: none;
+}
+
+/* ---------- Formularios ---------- */
+.auth-form {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+.auth-title {
+  font-size: clamp(28px, 3vw, 36px);
+}
+.auth-sub {
+  margin-top: -8px;
+  max-width: 34ch;
+  font-size: 15.5px;
+  color: var(--text-muted);
+}
+.auth-alert {
+  padding: 12px 14px;
+  border: 1px solid rgba(217, 92, 92, 0.5);
+  border-left: 3px solid var(--danger);
+  border-radius: var(--radius);
+  background: rgba(217, 92, 92, 0.1);
+  font-size: 14px;
+}
+
+.campo label {
+  display: block;
+  margin-bottom: 6px;
+  font-size: 13.5px;
+  font-weight: 500;
+}
+.input-wrap {
+  position: relative;
+}
+.input {
+  width: 100%;
+  padding: 12px 14px;
+  background: var(--bg);
+  color: var(--text);
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius);
+  font-family: var(--font-body);
+  font-size: 15px;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+.input:hover {
+  border-color: #4a5366;
+}
+.input:focus {
+  outline: none;
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px var(--accent-soft);
+}
+.input-error,
+.input-error:hover {
+  border-color: var(--danger);
+}
+.input-error:focus {
+  box-shadow: 0 0 0 3px rgba(217, 92, 92, 0.18);
+}
+.input-clave {
+  padding-right: 88px;
+}
+.input-toggle {
+  position: absolute;
+  top: 50%;
+  right: 8px;
+  transform: translateY(-50%);
+  padding: 6px 10px;
+  background: transparent;
+  border: 0;
+  border-radius: var(--radius);
+  font-family: var(--font-body);
+  font-size: 13px;
+  color: var(--text-muted);
+  cursor: pointer;
+}
+.input-toggle:hover {
+  color: var(--text);
+}
+.campo-error {
+  margin-top: 6px;
+  font-size: 13px;
+  color: var(--danger);
+}
+.campo-ayuda {
+  margin-top: 6px;
+  font-size: 13px;
+  color: var(--text-muted);
+}
+.auth-submit {
+  width: 100%;
+  margin-top: 6px;
+}
+.auth-submit:disabled {
+  opacity: 0.6;
+  cursor: progress;
+}
+
+/* Medidor de seguridad de la contraseña (reutiliza .meter) */
+.fuerza {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-top: 8px;
+}
+.fuerza .meter {
+  flex: 1;
+}
+.fuerza-texto {
+  min-width: 68px;
+  font-size: 12.5px;
+  text-align: right;
+  color: var(--text-muted);
+}
+
+/* Progreso del registro: cuenta, luego perfil de uso */
+.pasos {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 4px;
+  font-size: 13px;
+  color: var(--text-muted);
+}
+.paso {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.paso span {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 22px;
+  height: 22px;
+  border: 1px solid var(--border-strong);
+  border-radius: 50%;
+  font-family: var(--font-display);
+  font-size: 12px;
+  font-weight: 700;
+}
+.paso + .paso::before {
+  content: "";
+  width: 28px;
+  height: 1px;
+  margin-right: 4px;
+  background: var(--border-strong);
+}
+.paso-activo {
+  color: var(--text);
+}
+.paso-activo span {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: #08101f;
+}
+
+/* ---------- Pantallas provisionales ---------- */
+.pendiente {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+  gap: 24px;
+}
+.pendiente h1 {
+  max-width: 14em;
+  font-size: clamp(30px, 4.5vw, 56px);
+}
+.pendiente p {
+  max-width: 48ch;
+  font-size: 17px;
+  color: var(--text-muted);
+}
+
+/* ---------- Responsive ---------- */
+@media (max-width: 860px) {
+  .auth-main {
+    padding-bottom: 40px;
+  }
+  .auth-card {
+    min-height: 0;
+    box-shadow: 10px 10px 0 var(--accent-soft);
+  }
+  /* En móvil no hay panel deslizante: se muestra un solo formulario con pestañas */
+  .auth-overlay {
+    display: none;
+  }
+  .auth-switch {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    border-bottom: 1px solid var(--border-strong);
+  }
+  .auth-switch a {
+    margin-bottom: -1px;
+    padding: 14px 12px;
+    border-bottom: 2px solid transparent;
+    font-family: var(--font-display);
+    font-size: 15px;
+    font-weight: 700;
+    font-stretch: 112%;
+    text-align: center;
+    color: var(--text-muted);
+  }
+  .auth-switch a[aria-current="page"] {
+    color: var(--text);
+    border-bottom-color: var(--accent);
+  }
+  .auth-pane {
+    position: static;
+    display: none;
+    width: 100%;
+    padding: 32px 24px 36px;
+    visibility: visible;
+    opacity: 1;
+    transition: none;
+  }
+  .auth-pane.activo {
+    display: flex;
+  }
+}

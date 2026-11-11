@@ -1,0 +1,162 @@
+/* ============================================================
+   Estilos base de Build My PC (landing, login y registro)
+
+   El proyecto usa Tailwind 4, que ya trae su propio reset. Para no
+   chocar con él ni alterar el simulador:
+   - Los tokens (colores, fuentes) viven bajo la clase .bmp, no en :root.
+   - Las reglas sobre etiquetas (h1, a, ul...) también van bajo .bmp.
+   - El contenedor central se llama .bmp-wrap (Tailwind tiene .container).
+   Las páginas de Build My PC envuelven su contenido en <div className="bmp">.
+
+   Si el equipo cambia la paleta o las fuentes, se cambia solo en .bmp.
+   ============================================================ */
+
+.bmp {
+  /* Fondos */
+  --bg: #0f1115;
+  --surface: #171a21;
+  --surface-2: #1c2029;
+  --border: #262b36;
+  --border-strong: #343b49;
+
+  /* Texto */
+  --text: #e6e8ec;
+  --text-muted: #8b93a1;
+
+  /* Acento (único) */
+  --accent: #4c8dff;
+  --accent-hover: #6fa2ff;
+  --accent-soft: rgba(76, 141, 255, 0.12);
+
+  /* Estados (simulador y reporte) */
+  --ok: #3fb27f;
+  --warn: #e0a64a;
+  --danger: #d95c5c;
+
+  /* Forma */
+  --radius: 6px;
+  --radius-lg: 14px;
+
+  /* Tipografía:
+     Archivo (variable, con eje de ancho) para títulos, tipo ficha técnica.
+     IBM Plex Sans para el texto corrido. Se cargan desde Google Fonts en index.html. */
+  --font-display: 'Archivo', system-ui, sans-serif;
+  --font-body: 'IBM Plex Sans', system-ui, sans-serif;
+
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font-body);
+  font-size: 16px;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Desplazamiento suave hacia las secciones, solo cuando hay una página de Build My PC */
+html:has(.bmp) {
+  scroll-behavior: smooth;
+}
+
+/* Reglas sobre etiquetas, con especificidad mínima (:where) */
+:where(.bmp) :is(h1, h2, h3, h4) {
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-stretch: 112%;
+  line-height: 1.05;
+  letter-spacing: -0.02em;
+  margin: 0;
+}
+
+:where(.bmp) p {
+  margin: 0;
+}
+
+:where(.bmp) a {
+  color: inherit;
+  text-decoration: none;
+}
+
+:where(.bmp) :is(ul, ol) {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+/* Contenedor central reutilizable */
+.bmp-wrap {
+  width: 100%;
+  max-width: 1160px;
+  margin: 0 auto;
+  padding: 0 24px;
+}
+
+/* Botones */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 11px 20px;
+  border-radius: var(--radius);
+  border: 1px solid transparent;
+  font-family: var(--font-body);
+  font-size: 15px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 0.2s, border-color 0.2s, transform 0.2s;
+}
+
+.btn:active {
+  transform: translateY(1px);
+}
+
+.btn-primary {
+  background: var(--accent);
+  color: #08101f;
+}
+
+.btn-primary:hover {
+  background: var(--accent-hover);
+}
+
+.btn-ghost {
+  background: transparent;
+  color: var(--text);
+  border-color: var(--border-strong);
+}
+
+.btn-ghost:hover {
+  border-color: var(--accent);
+  background: var(--accent-soft);
+}
+
+.btn-dark {
+  background: #08101f;
+  color: var(--text);
+}
+
+.btn-dark:hover {
+  background: var(--surface);
+}
+
+.btn-lg {
+  padding: 14px 26px;
+  font-size: 16px;
+}
+
+/* Accesibilidad: foco visible */
+:where(.bmp) :focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html:has(.bmp) {
+    scroll-behavior: auto;
+  }
+  :where(.bmp) *,
+  :where(.bmp) *::before,
+  :where(.bmp) *::after {
+    transition: none !important;
+    animation: none !important;
+  }
+}
