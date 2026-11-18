@@ -5,13 +5,28 @@ import PcWireframe from '../components/shared/pc-wireframe'
 import LoginForm from '../components/auth/login-form'
 import RegisterForm from '../components/auth/register-form'
 
-// Pantalla única para iniciar sesión y registrarse.
-// La URL decide el modo: /login o /registro. Como ambas usan la misma ruta,
-// el panel azul se desliza de un lado al otro sin recargar.
+// Lee el tema guardado (mismo que usa la navbar de la landing)
+function temaGuardado(): 'dark' | 'light' {
+  try {
+    const v = localStorage.getItem('bmp-theme')
+    if (v === 'dark' || v === 'light') return v
+  } catch {
+    // silencioso
+  }
+  return window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark'
+}
+
 export default function Auth() {
   const { modo } = useParams()
   const esLogin = modo === 'login'
   const esRegistro = modo === 'registro'
+
+  // Aplica el tema guardado al montar la página
+  useEffect(() => {
+    const bmp = document.querySelector('.bmp')
+    const target = bmp ?? document.documentElement
+    target.setAttribute('data-theme', temaGuardado())
+  }, [])
 
   // Al cambiar de modo en pantallas grandes, el foco pasa al primer campo.
   useEffect(() => {
@@ -20,7 +35,6 @@ export default function Auth() {
     if (id) document.getElementById(id)?.focus({ preventScroll: true })
   }, [esLogin, esRegistro])
 
-  // Cualquier otra ruta de un solo segmento (ej. /hola) vuelve al inicio.
   if (!esLogin && !esRegistro) return <Navigate to="/" replace />
 
   return (
@@ -36,7 +50,7 @@ export default function Auth() {
 
       <main className="bmp-wrap auth-main">
         <div className="auth-card" data-modo={modo}>
-          {/* Selector para pantallas pequeñas (el panel deslizante se oculta ahí) */}
+          {/* Selector para pantallas pequeñas */}
           <nav className="auth-switch" aria-label="Iniciar sesión o crear cuenta">
             <Link to="/login" aria-current={esLogin ? 'page' : undefined}>
               Iniciar sesión
@@ -54,7 +68,7 @@ export default function Auth() {
             <RegisterForm />
           </section>
 
-          {/* Panel azul que se desliza entre los dos formularios */}
+          {/* Panel deslizante */}
           <aside className="auth-overlay">
             <div className="overlay-art" aria-hidden="true">
               <PcWireframe />

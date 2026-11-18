@@ -1,47 +1,56 @@
 /* ============================================================
    Estilos base de Build My PC (landing, login y registro)
 
-   El proyecto usa Tailwind 4, que ya trae su propio reset. Para no
-   chocar con él ni alterar el simulador:
-   - Los tokens (colores, fuentes) viven bajo la clase .bmp, no en :root.
-   - Las reglas sobre etiquetas (h1, a, ul...) también van bajo .bmp.
-   - El contenedor central se llama .bmp-wrap (Tailwind tiene .container).
-   Las páginas de Build My PC envuelven su contenido en <div className="bmp">.
+   Dos temas: oscuro (por defecto) y claro.
+   El atributo data-theme en <html> o en .bmp cambia el tema.
+   Si no hay data-theme, se usa oscuro.
 
-   Si el equipo cambia la paleta o las fuentes, se cambia solo en .bmp.
+   Uso:
+     <html data-theme="light">   → tema claro en toda la app
+     <div class="bmp" data-theme="light"> → solo en esta página
+
+   Los tokens viven bajo .bmp para no chocar con Tailwind ni
+   con el simulador del equipo (que no tiene .bmp).
    ============================================================ */
 
+/* ---- Tema oscuro (por defecto) ---- */
 .bmp {
-  /* Fondos */
-  --bg: #0f1115;
-  --surface: #171a21;
-  --surface-2: #1c2029;
-  --border: #262b36;
-  --border-strong: #343b49;
+  /* Fondos: más gris-azulado, menos negro puro */
+  --bg:        #0d1017;
+  --surface:   #13171e;
+  --surface-2: #181d26;
+  --border:    #222731;
+  --border-strong: #2d3341;
 
-  /* Texto */
-  --text: #e6e8ec;
-  --text-muted: #8b93a1;
+  /* Texto: menos blanco puro, más cómodo */
+  --text:      #d8dce6;
+  --text-muted: #7a8395;
 
-  /* Acento (único) */
-  --accent: #4c8dff;
-  --accent-hover: #6fa2ff;
-  --accent-soft: rgba(76, 141, 255, 0.12);
+  /* Acento: verde teal técnico */
+  --accent:       #0f8663;
+  --accent-hover: #0e7a5a;
+  --accent-soft:  rgba(14, 168, 122, 0.11);
 
-  /* Estados (simulador y reporte) */
-  --ok: #3fb27f;
-  --warn: #e0a64a;
-  --danger: #d95c5c;
+  /* Estados */
+  --ok:    #0ea87a;
+  --warn:  #c9924a;
+  --danger: #c95050;
 
   /* Forma */
-  --radius: 6px;
+  --radius:    6px;
   --radius-lg: 14px;
 
-  /* Tipografía:
-     Archivo (variable, con eje de ancho) para títulos, tipo ficha técnica.
-     IBM Plex Sans para el texto corrido. Se cargan desde Google Fonts en index.html. */
+  /* Tipografía */
   --font-display: 'Archivo', system-ui, sans-serif;
-  --font-body: 'IBM Plex Sans', system-ui, sans-serif;
+  --font-body:    'IBM Plex Sans', system-ui, sans-serif;
+
+  /* Colores hardcodeados heredados (para reutilizarlos en landing.css y auth.css) */
+  --navbar-bg:    rgba(13, 16, 23, 0.90);
+  --bench-bg:     rgba(19, 23, 30, 0.93);
+  --card-bg:      rgba(19, 23, 30, 0.95);
+  --cta-fg:       #ffffff;
+  --wf-case-fill: rgba(13, 16, 23, 0.65);
+  --wf-board-fill: rgba(24, 29, 38, 0.80);
 
   background: var(--bg);
   color: var(--text);
@@ -51,12 +60,65 @@
   -webkit-font-smoothing: antialiased;
 }
 
-/* Desplazamiento suave hacia las secciones, solo cuando hay una página de Build My PC */
+/* ---- Tema claro ---- */
+.bmp[data-theme="light"],
+[data-theme="light"] .bmp {
+  --bg:        #f0f2f7;
+  --surface:   #ffffff;
+  --surface-2: #e8ecf3;
+  --border:    #c8cedb;
+  --border-strong: #b0b8c8;
+
+  --text:      #1a2030;
+  --text-muted: #5a6478;
+
+  --accent:       #0a9068;
+  --accent-hover: #0b7d5c;
+  --accent-soft:  rgba(10, 144, 104, 0.10);
+
+  --ok:    #0a9068;
+  --warn:  #b07a2a;
+  --danger: #b53c3c;
+
+  --navbar-bg:    rgba(240, 242, 247, 0.92);
+  --bench-bg:     rgba(255, 255, 255, 0.97);
+  --card-bg:      rgba(255, 255, 255, 0.98);
+  --cta-fg:       #ffffff;
+  --wf-case-fill: rgba(232, 236, 243, 0.80);
+  --wf-board-fill: rgba(220, 225, 235, 0.90);
+}
+
+/* Respeta la preferencia del sistema si no hay data-theme explícito */
+@media (prefers-color-scheme: light) {
+  .bmp:not([data-theme]):not([data-theme="dark"]) {
+    --bg:        #f0f2f7;
+    --surface:   #ffffff;
+    --surface-2: #e8ecf3;
+    --border:    #c8cedb;
+    --border-strong: #b0b8c8;
+    --text:      #1a2030;
+    --text-muted: #5a6478;
+    --accent:       #0a9068;
+    --accent-hover: #0b7d5c;
+    --accent-soft:  rgba(10, 144, 104, 0.10);
+    --ok:    #0a9068;
+    --warn:  #b07a2a;
+    --danger: #b53c3c;
+    --navbar-bg:    rgba(240, 242, 247, 0.92);
+    --bench-bg:     rgba(255, 255, 255, 0.97);
+    --card-bg:      rgba(255, 255, 255, 0.98);
+    --cta-fg:       #ffffff;
+    --wf-case-fill: rgba(232, 236, 243, 0.80);
+    --wf-board-fill: rgba(220, 225, 235, 0.90);
+  }
+}
+
+/* Desplazamiento suave */
 html:has(.bmp) {
   scroll-behavior: smooth;
 }
 
-/* Reglas sobre etiquetas, con especificidad mínima (:where) */
+/* Reglas sobre etiquetas, con especificidad mínima */
 :where(.bmp) :is(h1, h2, h3, h4) {
   font-family: var(--font-display);
   font-weight: 800;
@@ -81,7 +143,7 @@ html:has(.bmp) {
   list-style: none;
 }
 
-/* Contenedor central reutilizable */
+/* Contenedor central */
 .bmp-wrap {
   width: 100%;
   max-width: 1160px;
@@ -111,7 +173,7 @@ html:has(.bmp) {
 
 .btn-primary {
   background: var(--accent);
-  color: #08101f;
+  color: var(--cta-fg);
 }
 
 .btn-primary:hover {
@@ -130,8 +192,9 @@ html:has(.bmp) {
 }
 
 .btn-dark {
-  background: #08101f;
+  background: var(--surface-2);
   color: var(--text);
+  border-color: var(--border);
 }
 
 .btn-dark:hover {
@@ -143,7 +206,29 @@ html:has(.bmp) {
   font-size: 16px;
 }
 
-/* Accesibilidad: foco visible */
+/* Toggle de tema */
+.theme-toggle {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border-radius: var(--radius);
+  border: 1px solid var(--border-strong);
+  background: transparent;
+  color: var(--text-muted);
+  cursor: pointer;
+  transition: border-color 0.2s, color 0.2s, background 0.2s;
+  flex-shrink: 0;
+}
+
+.theme-toggle:hover {
+  border-color: var(--accent);
+  color: var(--text);
+  background: var(--accent-soft);
+}
+
+/* Accesibilidad */
 :where(.bmp) :focus-visible {
   outline: 2px solid var(--accent);
   outline-offset: 2px;
