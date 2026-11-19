@@ -4,7 +4,11 @@ version = "0.1.0"
 description = "API del simulador de armado de PC"
 requires-python = ">=3.12"
 dependencies = [
+    "alembic>=1.20.1",
     "fastapi>=0.115",
+    "psycopg[binary]>=3.3.9",
+    "python-dotenv>=1.2.4",
+    "sqlalchemy>=2.1.8",
     "uvicorn[standard]>=0.30",
 ]
 
